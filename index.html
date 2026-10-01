@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#000000">
 <meta property="og:title" content="Wavelength: instant, high-volume, low-fee payments">
 <meta property="og:description" content="Payments for apps, humans, and AI agents. Money that moves like an API call. First payment in minutes. By Lightning Labs.">
-<!-- Si la landing no vive en la raíz de este dominio, cambia estas tres URLs -->
+<!-- If the landing page doesn't live at the root of this domain, update these URLs -->
 <link rel="canonical" href="https://wavelength.lightning.engineering/">
 <meta property="og:url" content="https://wavelength.lightning.engineering/">
 <meta property="og:image" content="https://wavelength.lightning.engineering/og.png">
@@ -30,8 +30,8 @@
   --bg:#000000;
   --surface:#000000;
   --text:#FFFFFF;
-  --dim:rgba(255,255,255,.62);   /* ~7.8:1 sobre negro */
-  --faint:rgba(255,255,255,.5);  /* ~5.3:1 sobre negro (WCAG AA) */
+  --dim:rgba(255,255,255,.62);   /* ~7.8:1 contrast on black */
+  --faint:rgba(255,255,255,.5);  /* ~5.3:1 contrast on black (WCAG AA) */
   --ink:#0A0A0A;
   --lime:#DFFF00;
   --violet:#7B2DFF;
@@ -223,7 +223,7 @@ a.hl-k:hover{text-decoration:underline}
 
 /* ===== timeline ledger ===== */
 .ledger{position:relative;margin:64px 0 70px}
-/* conductor estatico sin JS: espina de neon por eras a traves de los bullets */
+/* no-JS static conductor: a neon spine through the bullets, colored by era */
 .entry{--railx:122px}
 .entry:not(.wl)::before{content:"";position:absolute;left:var(--railx);top:0;bottom:0;width:2.5px;transform:translateX(-50%);border-radius:2px}
 .entry:nth-of-type(2)::before{top:52px;background:#FF9500}
@@ -504,7 +504,7 @@ footer{padding:70px 0 44px}
   .u-blink{animation:none;opacity:0}
 }
 
-/* ===== logo: el WebP tiene fondo negro opaco; screen lo funde con el glow ===== */
+/* ===== logo: the WebP has an opaque black background; screen blends it into the glow ===== */
 .logo-img{mix-blend-mode:screen}
 .nav .logo-box{transition:opacity .35s ease}
 .nav.logo-off .logo-box{opacity:0;pointer-events:none}
@@ -534,7 +534,7 @@ footer{padding:70px 0 44px}
 
 .nw{white-space:nowrap}
 
-/* empalme (al final: gana el cascade) */
+/* overrides (kept last so they win the cascade) */
 html:not(.js) .spectrum-draw{margin-top:-12px}
 @media(max-width:640px){
   .spectrum-draw{width:280px;margin-left:-23.6px}
@@ -1254,12 +1254,12 @@ Built by Lightning Labs, creators of lnd. Open source (MIT): https://github.com/
     function render(sg){
       const ctx = sg.ctx;
       ctx.clearRect(0, 0, 32, sg.h);
-      // track fantasma
+      // ghost track
       strokePts(ctx, sg.pts, 0, sg.len, 1, 'rgba(255,255,255,.1)');
       const drawn = sg.len * sg.p;
       if (drawn > 0.5) {
         if (sg.isLast) {
-          // taper sin costuras: color en tramos con puntas planas y micro-solape; nucleo en un solo trazo
+          // seamless taper: color drawn in segments with flat caps and a slight overlap; the core is a single stroke
           const steps = 26;
           for (let c = 0; c < steps; c++) {
             const f0 = c / steps, f1 = (c + 1) / steps;
@@ -1391,7 +1391,7 @@ safe(function(){
   });
 
   safe(function(){
-  // pills: un solo prompt, cinco destinos
+  // pills: one prompt, five destinations
   const promptEl = document.getElementById('promptText');
   if (promptEl) {
     const q = encodeURIComponent(promptEl.textContent.trim());
@@ -1402,14 +1402,14 @@ safe(function(){
   });
 
   safe(function(){
-  // SMIL respeta reduced motion
+  // SMIL animations respect reduced motion
   if (reduced) { document.querySelectorAll('svg').forEach(s => { try { s.pauseAnimations(); } catch(e){} }); }
 
 
   });
 
   safe(function(){
-  // nav: se oculta al bajar, vuelve al subir; y marca la seccion activa
+  // nav: hides on scroll down, returns on scroll up, and highlights the active section
   const navEl = document.querySelector('.nav');
   let lastY = 0;
   window.addEventListener('scroll', () => {
@@ -1434,7 +1434,7 @@ safe(function(){
   });
 
   safe(function(){
-  // el balance de la demo cuenta hacia arriba al entrar en pantalla
+  // the demo balance counts up when it enters the viewport
   const bal = document.querySelector('.wm-bal');
   if (bal && !reduced) {
     const io2 = new IntersectionObserver(es => {
@@ -1456,7 +1456,7 @@ safe(function(){
   });
 
   safe(function(){
-  // el 100% de los stats cuenta al revelarse
+  // the 100% stat counts up when revealed
   const pct = [...document.querySelectorAll('.stat .v')].find(v => v.textContent.trim() === '100%');
   if (pct && !reduced) {
     const io3 = new IntersectionObserver(es => {
@@ -1507,12 +1507,12 @@ safe(function(){
 
 
   safe(function(){
-  // para quien abre DevTools
+  // for anyone who opens DevTools
   console.log('%c~\u2571\u2572~ wavelength_', 'color:#DFFF00;font-family:monospace;font-size:14px');
   console.log('%cSelf-custodial Bitcoin + Lightning for apps and agents. Docs: https://wavelength.lightning.engineering/', 'color:#7B2DFF;font-family:monospace');
   });
 
-  // failsafe: centinela sobre <body> (siempre intersecta); si el observer no vive, revelado estatico TOTAL
+  // failsafe: a sentinel on <body> (always intersects); if the observer never fires, reveal everything statically
   function staticReveal(){
     try { document.documentElement.classList.remove('js'); } catch(e){}
     try { document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); }); } catch(e){}
